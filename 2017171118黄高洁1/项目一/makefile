@@ -1,8 +1,7 @@
-ifneq ($(KERNELRELEASE),)
-	obj-m:=simple.o
-else
-	PWD:=$(shell pwd)
-	KDIR:=/lib/modules/$(shell uname -r)/build
-all:
-	make -C $(KDIR) M=$(PWD) modules
-endif
+KVERS = $(shell uname -r)
+obj-m += simple.o
+build: kernel_modules
+kernel_modules:
+	make -C /lib/modules/$(KVERS)/build M=$(CURDIR) modules
+clean:
+	make -C /lib/modules/$(KVERS)/build M=$(CURDIR) clean
